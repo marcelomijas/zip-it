@@ -4,7 +4,7 @@ from shutil import make_archive
 
 def zipit(wd: str, ze: tuple):
     for i in listdir(wd):
-        if not path.isfile(i) and i not in ze:
+        if not path.isfile(wd + "\\" + i) and i not in ze:
             print(f"Compressing '{i}' to '{i}.zip'")
             try:
                 make_archive(i, "zip", i)
@@ -24,7 +24,7 @@ def main():
     if proceed not in ("n", "N", "No", "NO"):
         # read exceptions file
         try:
-            fe = open(wd + "/zip-itExceptions.txt", "r", encoding="utf-8")
+            fe = open(wd + "\\zip-itExceptions.txt", "r", encoding="utf-8")
             ze = fe.read().splitlines()
             fe.close()
         except:
