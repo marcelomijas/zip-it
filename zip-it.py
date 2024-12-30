@@ -29,13 +29,12 @@ def main():
     wd = path.dirname(fp)
     print("Current working directory:", wd)
     # read exceptions file
-    try:
+    ze = ()
+    if path.exists(wd + "/zip-itExceptions.txt"):
         fe = open(wd + "/zip-itExceptions.txt", "r", encoding="utf-8")
         ze = fe.read().splitlines()
         fe.close()
         print("zip-itExceptions.txt file found.")
-    except:
-        ze = ()
     print("\nThe following folders will be compressed:")
     # list folders to compress
     for i in listdir(wd):
