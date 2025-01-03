@@ -8,7 +8,7 @@ def zipit(wd: str, ze: tuple):
         if not path.isfile(wd + "/" + i) and i not in ze:
             print(f"-> {i}.zip")
             try:
-                make_archive(i, "zip", i)
+                make_archive(wd + "/" + i, "zip", wd)
                 print("\tComplete!")
             except:
                 print("\tError!")
