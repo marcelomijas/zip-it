@@ -2,25 +2,16 @@ from os import listdir, path, system, name
 from shutil import make_archive
 
 
-def zipit(wd: str, ze: tuple):
+def zipit(wd: str, ze: list[str]):
     """This function compresses all folders found in 'wd' except the ones in 'ze'."""
     for i in listdir(wd):
-        if not path.isfile(wd + "/" + i) and i not in ze:
+        if not path.isfile(path.join(wd, i)) and i not in ze:
             print(f"-> {i}.zip")
             try:
-                make_archive(wd + "/" + i, "zip", wd, i)
+                make_archive(path.join(wd, i), "zip", wd, i)
                 print("\tComplete!")
-            except:
-                print("\tError!")
-
-
-def clear():
-    # Windows
-    if name == "nt":
-        system("cls")
-    # GNU/Linux
-    else:
-        system("clear")
+            except Exception as e:
+                print("\tError: {e}")
 
 
 def main():
@@ -28,25 +19,30 @@ def main():
     fp = path.abspath(__file__)
     wd = path.dirname(fp)
     print("Current working directory:", wd)
+
     # read exceptions file
-    ze = ()
-    if path.exists(wd + "/zip-itExceptions.txt"):
-        fe = open(wd + "/zip-itExceptions.txt", "r", encoding="utf-8")
-        ze = fe.read().splitlines()
-        fe.close()
+    ze = []
+    exceptions_file = path.join(wd, "zip-itExceptions.txt")
+    if path.exists(exceptions_file):
+        with open(exceptions_file, "r", encoding="utf-8") as fe:
+            ze = fe.read().splitlines()
         print("zip-itExceptions.txt file found.")
-    print("\nThe following folders will be compressed:")
+
     # list folders to compress
+    print("\nThe following folders will be compressed:")
     for i in listdir(wd):
-        if not path.isfile(wd + "/" + i) and i not in ze:
+        if not path.isfile(path.join(wd, i)) and i not in ze:
             print(f"-> {i}")
-    proceed = input("\nDo you want to proceed? [Y/n] ")
-    if proceed not in ("n", "N", "No", "NO"):
-        clear()
+
+    proceed = input("\nDo you want to proceed? [Y/n] ").strip().lower()
+    if proceed not in ("n", "no"):
+        system("cls" if name == "nt" else "clear")
         print("Compressing:")
         zipit(wd, ze)
+
     # finish
     input("\nPress Enter to finish the program or close this window ")
 
 
-main()
+if __name__ == "__main__":
+    main()
